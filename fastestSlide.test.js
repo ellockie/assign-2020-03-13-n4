@@ -1,7 +1,7 @@
-const Slide = require('./fastestSlide.js');
+const PyramidSlide = require('./fastestSlide.js');
 
-const slideParams = {
-    depth: 4,
+const pyramid1 = {
+    height: 4,
     layers: [
         [1],
         [2, 3],
@@ -10,8 +10,8 @@ const slideParams = {
     ]
 };
 
-const slideParams2 = {
-    depth: 15,
+const pyramid2 = {
+    height: 15,
     layers: [
         [75],
         [95, 64],
@@ -34,32 +34,32 @@ const slideParams2 = {
 
 describe('Generic tests:', () => {
 
-    const slideGraph = new Slide(slideParams);
+    const pyramidSlide = new PyramidSlide(pyramid1);
 
-    test('slide is defined', () => {
-        expect(slideGraph).toBeDefined();
+    test('pyramid is defined', () => {
+        expect(pyramidSlide).toBeDefined();
     });
 
-    test('slideGraph.getFastestSlide() is defined', () => {
-        expect(slideGraph.getFastestSlide).toBeDefined();
+    test('pyramid.getFastestSlide() is defined', () => {
+        expect(pyramidSlide.getFastestSlide).toBeDefined();
     });
 });
 
-describe('Example slide 1 tests:', () => {
+describe('Example pyramid 1 tests:', () => {
 
-    const slideGraph = new Slide(slideParams);
-    const fastestSlide = slideGraph.getFastestSlide();
+    const pyramidSlide = new PyramidSlide(pyramid1);
+    const fastestSlide = pyramidSlide.getFastestSlide();
 
     test('first node to be equal 1', () => {
-        expect(slideGraph.slide.layers[0][0]).toBe(1);
+        expect(pyramidSlide.pyramid.layers[0][0]).toBe(1);
     });
 
-    test('slideGraph.slide.layers.length is 4', () => {
-        expect(slideGraph.slide.layers.length).toBe(4);
+    test('the height of the pyramid is as specified', () => {
+        expect(pyramidSlide.pyramid.height).toBe(pyramidSlide.pyramid.layers.length);
     });
 
-    test('fastestSlide() to be a number', () => {
-        expect(fastestSlide).not.toBeNull();
+    test('pyramid layers length is 4', () => {
+        expect(pyramidSlide.pyramid.layers.length).toBe(4);
     });
 
     test('fastestSlide to be 14', () => {
@@ -67,24 +67,24 @@ describe('Example slide 1 tests:', () => {
     });
 });
 
-describe('Example slide 2 tests:', () => {
+describe('Example pyramid 2 tests:', () => {
 
-    const slideGraph = new Slide(slideParams2);
-    const fastestSlide = slideGraph.getFastestSlide();
+    const pyramidSlide = new PyramidSlide(pyramid2);
+    const fastestSlide = pyramidSlide.getFastestSlide();
 
     test('the first node to be equal 75', () => {
-        expect(slideGraph.slide.layers[0][0]).toBe(75);
+        expect(pyramidSlide.pyramid.layers[0][0]).toBe(75);
     });
 
-    test('slideGraph.slide.layers.length is 15', () => {
-        expect(slideGraph.slide.layers.length).toBe(15);
+    test('the height of the pyramid is as specified', () => {
+        expect(pyramidSlide.pyramid.height).toBe(pyramidSlide.pyramid.layers.length);
     });
 
-    test('fastestSlide() to be a number', () => {
-        expect(fastestSlide).not.toBeNull();
+    test('pyramid layers length is 15', () => {
+        expect(pyramidSlide.pyramid.layers.length).toBe(15);
     });
 
-    test('fastestSlide2 to be 447', () => {
+    test('fastestSlide to be 447', () => {
         expect(fastestSlide).toBe(447);
     });
 });

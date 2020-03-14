@@ -1,12 +1,13 @@
-class Slide {
+class PyramidSlide {
 
-    constructor(slide) {
-        this.slide = slide;
+    constructor(pyramid) {
+        this.pyramid = pyramid;
     }
 
     slideDown(parentsTotal, currentLayer, currentColumn) {
-        const currentTotal = parentsTotal + this.slide.layers[currentLayer][currentColumn];
-        if (currentLayer === (this.slide.depth - 1)) {
+        const currentTotal = parentsTotal + this.pyramid.layers[currentLayer][currentColumn];
+        // check if reached the bottom
+        if (currentLayer === (this.pyramid.height - 1)) {
             this.addCurrentPathResult(currentTotal);
             return;
         }
@@ -27,4 +28,4 @@ class Slide {
     }
 }
 
-module.exports = Slide;
+module.exports = PyramidSlide;
