@@ -1,0 +1,16 @@
+{
+  "name": "shortest-slide-calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fastestSlide.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^25"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Lukasz Przewlocki",
+  "license": "ISC"
+}
