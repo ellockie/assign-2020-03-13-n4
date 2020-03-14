@@ -4,22 +4,26 @@ class Slide {
         this.slide = slide;
     }
 
-    getChildren(parentsTotal, currentLayer, currentColumn) {
-        const nodeValue = this.slide.layers[currentLayer][currentColumn];
-        const currentTotal = nodeValue + parentsTotal;
+    slideDown(parentsTotal, currentLayer, currentColumn) {
+        const currentTotal = parentsTotal + this.slide.layers[currentLayer][currentColumn];
         if (currentLayer === (this.slide.depth - 1)) {
-            this.values.push(currentTotal);
-            return nodeValue;
+            this.addCurrentPathResult(currentTotal);
+            return;
         }
-        return nodeValue +
-            this.getChildren(currentTotal, currentLayer + 1, currentColumn) +
-            this.getChildren(currentTotal, currentLayer + 1, currentColumn + 1);
+        this.slideDown(currentTotal, currentLayer + 1, currentColumn);
+        this.slideDown(currentTotal, currentLayer + 1, currentColumn + 1);
     }
 
+    addCurrentPathResult(result) {
+        this.results.push(result);
+    }
+
+    // Public method(s)
+
     getFastestSlide() {
-        this.values = [];
-        this.getChildren(0, 0, 0);
-        return Math.min(...this.values);
+        this.results = [];
+        this.slideDown(0, 0, 0);
+        return Math.min(...this.results);
     }
 }
 

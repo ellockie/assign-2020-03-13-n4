@@ -9,6 +9,7 @@ const slideParams = {
         [7, 8, 9, 10]
     ]
 };
+
 const slideParams2 = {
     depth: 15,
     layers: [
@@ -30,24 +31,24 @@ const slideParams2 = {
     ]
 };
 
-const slideGraph = new Slide(slideParams);
-const fastestSlide = slideGraph.getFastestSlide();
 
-// beforeAll(() => {});
+describe('Generic tests:', () => {
 
+    const slideGraph = new Slide(slideParams);
 
-describe('Simple tests:', () => {
     test('slide is defined', () => {
         expect(slideGraph).toBeDefined();
     });
 
-    test('slide.getFastestSlide() is defined', () => {
+    test('slideGraph.getFastestSlide() is defined', () => {
         expect(slideGraph.getFastestSlide).toBeDefined();
     });
+});
 
-    test('fastestSlide is defined', () => {
-        expect(slideGraph.getFastestSlide).toBeDefined();
-    });
+describe('Example slide 1 tests:', () => {
+
+    const slideGraph = new Slide(slideParams);
+    const fastestSlide = slideGraph.getFastestSlide();
 
     test('first node to be equal 1', () => {
         expect(slideGraph.slide.layers[0][0]).toBe(1);
@@ -57,40 +58,32 @@ describe('Simple tests:', () => {
         expect(slideGraph.slide.layers.length).toBe(4);
     });
 
-    test('slideGraph.getChildren is defined', () => {
-        expect(slideGraph.getChildren).toBeDefined();
-    });
-
-    test('2 to be a number', () => {
-        expect(2).not.toBeNaN();
-    });
-
     test('fastestSlide() to be a number', () => {
         expect(fastestSlide).not.toBeNull();
     });
-});
 
-describe('Object 1 tests:', () => {
-
-    const slideGraph = new Slide(slideParams);
-    const fastestSlide = slideGraph.getFastestSlide();
-
-    test('fastestSlide to be larger than 0', () => {
-        expect(fastestSlide).toBeGreaterThan(0);
-    });
     test('fastestSlide to be 14', () => {
         expect(fastestSlide).toBe(14);
     });
 });
 
-describe('Object 2 tests:', () => {
+describe('Example slide 2 tests:', () => {
 
     const slideGraph = new Slide(slideParams2);
     const fastestSlide = slideGraph.getFastestSlide();
 
-    test('fastestSlide2 to be larger than 0', () => {
-        expect(fastestSlide).toBeGreaterThan(0);
+    test('the first node to be equal 75', () => {
+        expect(slideGraph.slide.layers[0][0]).toBe(75);
     });
+
+    test('slideGraph.slide.layers.length is 15', () => {
+        expect(slideGraph.slide.layers.length).toBe(15);
+    });
+
+    test('fastestSlide() to be a number', () => {
+        expect(fastestSlide).not.toBeNull();
+    });
+
     test('fastestSlide2 to be 447', () => {
         expect(fastestSlide).toBe(447);
     });
