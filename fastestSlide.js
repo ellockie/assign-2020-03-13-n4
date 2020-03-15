@@ -58,9 +58,19 @@ class PyramidSlide {
         this.processInput();
         this.slideDown(0, 0, 0);
         const fastestSlide = Math.min(...this.results);
-        console.log("fastest slide:", fastestSlide);
+        console.log(fastestSlide);
         return fastestSlide;
     }
 }
+
+const main = () => {
+    var myArgs = process.argv.slice(2);
+    const inputFileName = myArgs.length ? myArgs[0] : defaultInputFileName;
+    console.log('input file name: ', inputFileName);
+    const pyramidSlide = new PyramidSlide(inputFileName);
+    pyramidSlide.getFastestSlide();
+}
+
+main();
 
 module.exports = PyramidSlide;
