@@ -25,7 +25,9 @@ class PyramidSlide {
     }
 
     addCurrentPathResult(result) {
-        this.results.push(result);
+        this.fastestSlide = this.fastestSlide === null || result < this.fastestSlide
+            ? result
+            : this.fastestSlide;
     }
 
     getNumberArrays(lines) {
@@ -53,13 +55,12 @@ class PyramidSlide {
     // Public method(s)
 
     async getFastestSlide() {
-        this.results = [];
+        this.fastestSlide = null;
         await this.loadInputString();
         this.processInput();
         this.slideDown(0, 0, 0);
-        const fastestSlide = Math.min(...this.results);
-        console.log(fastestSlide);
-        return fastestSlide;
+        console.log(this.fastestSlide);
+        return this.fastestSlide;
     }
 }
 
