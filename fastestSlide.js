@@ -6,14 +6,14 @@ class PyramidSlide {
 
     constructor(inputFileName) {
         this.inputFileName = inputFileName || defaultInputFileName;
-        this.pyramid = {height: null, layers: []};
+        this.pyramid = { height: null, layers: [] };
     }
 
     async loadInputString() {
         try {
             this.inputString = await readInput(this.inputFileName);
         } catch (err) {
-            console.log("Problem when reading file: ", this.inputFileName, "\nError: ", err);
+            console.error(`Error when reading file '${this.inputFileName}':\n${err}`);
         }
     }
 
@@ -24,10 +24,10 @@ class PyramidSlide {
         this.pyramid.layers = numberArrays;
     }
 
-    addCurrentPathResult(result) {
-        this.fastestSlide = this.fastestSlide === null || result < this.fastestSlide
-            ? result
-            : this.fastestSlide;
+    onSlideFinished(result) {
+        this.fastestSlide = this.fastestSlide === null || result < this.fastestSlide ?
+            result :
+            this.fastestSlide;
     }
 
     getNumberArrays(lines) {
@@ -41,11 +41,11 @@ class PyramidSlide {
             .map(str => parseInt(str));
     }
 
-    slideDown(parentsTotal, currentLayer, currentColumn) {
-        const currentTotal = parentsTotal + this.pyramid.layers[currentLayer][currentColumn];
+    slideDown(parentTotal, currentLayer, currentColumn) {
+        const currentTotal = parentTotal + this.pyramid.layers[currentLayer][currentColumn];
         // check if reached the bottom of the pyramid
         if (currentLayer === (this.pyramid.height - 1)) {
-            this.addCurrentPathResult(currentTotal);
+            this.onSlideFinished(currentTotal);
             return;
         }
         this.slideDown(currentTotal, currentLayer + 1, currentColumn);
@@ -56,7 +56,12 @@ class PyramidSlide {
 
     async getFastestSlide() {
         this.fastestSlide = null;
-        await this.loadInputString();
+        try {
+            this.inputString = await readInput(this.inputFileName);
+        } catch (err) {
+            console.error(`Error when reading file '${this.inputFileName}':\n${err}`);
+            return null;
+        }
         this.processInput();
         this.slideDown(0, 0, 0);
         console.log(this.fastestSlide);
@@ -64,10 +69,16 @@ class PyramidSlide {
     }
 }
 
-const main = () => {
+const getFileNameFromArgs = () => {
     var myArgs = process.argv.slice(2);
-    const inputFileName = myArgs.length ? myArgs[0] : defaultInputFileName;
-    console.log('input file name: ', inputFileName);
+    return myArgs.length
+        ? myArgs[0]
+        : defaultInputFileName;
+}
+
+const main = () => {
+    const inputFileName = getFileNameFromArgs();
+    console.log('Input file name: ', inputFileName);
     const pyramidSlide = new PyramidSlide(inputFileName);
     pyramidSlide.getFastestSlide();
 }
