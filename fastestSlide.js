@@ -26,10 +26,14 @@ class PyramidSlide {
 
     processInput(inputString) {
         const lines = inputString.split('\n');
-        const numberArrays = lines
-            .map(line => this.getNumbersArray(line));
+        const numberArrays = this.getNumberArrays(lines);
         this.pyramid.height = numberArrays.shift()[0];
         this.pyramid.layers = numberArrays;
+    }
+
+    getNumberArrays(lines) {
+        return lines
+            .map(line => this.getNumbersArray(line));
     }
 
     getNumbersArray(line) {
@@ -41,15 +45,17 @@ class PyramidSlide {
     // Public method(s)
 
     async getFastestSlide() {
+        this.results = [];
         try {
             this.inputString = await readInput(this.inputFileName);
         } catch (err) {
             console.log("Problem when reading file: ", this.inputFileName, "\nError: ", err);
         }
         this.processInput(this.inputString);
-        this.results = [];
         this.slideDown(0, 0, 0);
-        return Math.min(...this.results);
+        const fastestSlide = Math.min(...this.results);
+        console.log("fastest slide:", fastestSlide);
+        return fastestSlide;
     }
 }
 
