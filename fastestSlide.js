@@ -9,26 +9,23 @@ class PyramidSlide {
         this.pyramid = {height: null, layers: []};
     }
 
-    slideDown(parentsTotal, currentLayer, currentColumn) {
-        const currentTotal = parentsTotal + this.pyramid.layers[currentLayer][currentColumn];
-        // check if reached the bottom of the pyramid
-        if (currentLayer === (this.pyramid.height - 1)) {
-            this.addCurrentPathResult(currentTotal);
-            return;
+    async loadInputString() {
+        try {
+            this.inputString = await readInput(this.inputFileName);
+        } catch (err) {
+            console.log("Problem when reading file: ", this.inputFileName, "\nError: ", err);
         }
-        this.slideDown(currentTotal, currentLayer + 1, currentColumn);
-        this.slideDown(currentTotal, currentLayer + 1, currentColumn + 1);
+    }
+
+    processInput() {
+        const lines = this.inputString.split('\n');
+        const numberArrays = this.getNumberArrays(lines);
+        this.pyramid.height = numberArrays.shift()[0];
+        this.pyramid.layers = numberArrays;
     }
 
     addCurrentPathResult(result) {
         this.results.push(result);
-    }
-
-    processInput(inputString) {
-        const lines = inputString.split('\n');
-        const numberArrays = this.getNumberArrays(lines);
-        this.pyramid.height = numberArrays.shift()[0];
-        this.pyramid.layers = numberArrays;
     }
 
     getNumberArrays(lines) {
@@ -42,16 +39,23 @@ class PyramidSlide {
             .map(str => parseInt(str));
     }
 
+    slideDown(parentsTotal, currentLayer, currentColumn) {
+        const currentTotal = parentsTotal + this.pyramid.layers[currentLayer][currentColumn];
+        // check if reached the bottom of the pyramid
+        if (currentLayer === (this.pyramid.height - 1)) {
+            this.addCurrentPathResult(currentTotal);
+            return;
+        }
+        this.slideDown(currentTotal, currentLayer + 1, currentColumn);
+        this.slideDown(currentTotal, currentLayer + 1, currentColumn + 1);
+    }
+
     // Public method(s)
 
     async getFastestSlide() {
         this.results = [];
-        try {
-            this.inputString = await readInput(this.inputFileName);
-        } catch (err) {
-            console.log("Problem when reading file: ", this.inputFileName, "\nError: ", err);
-        }
-        this.processInput(this.inputString);
+        await this.loadInputString();
+        this.processInput();
         this.slideDown(0, 0, 0);
         const fastestSlide = Math.min(...this.results);
         console.log("fastest slide:", fastestSlide);
