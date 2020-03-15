@@ -24,12 +24,6 @@ class PyramidSlide {
         this.pyramid.layers = numberArrays;
     }
 
-    onSlideFinished(result) {
-        this.fastestSlide = this.fastestSlide === null || result < this.fastestSlide ?
-            result :
-            this.fastestSlide;
-    }
-
     getNumberArrays(lines) {
         return lines
             .map(line => this.getNumbersArray(line));
@@ -39,6 +33,12 @@ class PyramidSlide {
         return line.split(' ')
             .filter(str => str.length)
             .map(str => parseInt(str));
+    }
+
+    onSlideFinished(result) {
+        this.fastestSlide = this.fastestSlide === null || result < this.fastestSlide ?
+            result :
+            this.fastestSlide;
     }
 
     slideDown(parentTotal, currentLayer, currentColumn) {
@@ -52,7 +52,7 @@ class PyramidSlide {
         this.slideDown(currentTotal, currentLayer + 1, currentColumn + 1);
     }
 
-    // Public method(s)
+    // 'Public' method(s)
 
     async getFastestSlide() {
         this.fastestSlide = null;
