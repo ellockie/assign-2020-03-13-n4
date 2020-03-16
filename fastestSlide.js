@@ -13,26 +13,53 @@ class PyramidSlide {
         try {
             this.inputString = await readInput(this.inputFileName);
         } catch (err) {
-            console.error(`Error when reading file '${this.inputFileName}':\n${err}`);
+            console.error(`Error when reading file '${this.inputFileName}':`);
+            throw err;
         }
     }
 
     processInput() {
         const lines = this.inputString.split('\n');
         const numberArrays = this.getNumberArrays(lines);
-        this.pyramid.height = numberArrays.shift()[0];
+        let height = numberArrays.shift();
+        this.pyramid.height = height[0];
         this.pyramid.layers = numberArrays;
     }
 
     getNumberArrays(lines) {
         return lines
-            .map(line => this.getNumbersArray(line));
+            .map(line => this.getNumbersArray(line))
+            // remove empty lines
+            .filter(line => line.length);
     }
 
     getNumbersArray(line) {
         return line.split(' ')
+            // remove empty elements
             .filter(str => str.length)
-            .map(str => parseInt(str));
+            // extract integers
+            .map(str => parseInt(str))
+            // remove NaN's
+            .filter(item => !isNaN(item));
+    }
+
+    validateInput() {
+        this.validateLayerNumbers();
+        this.validateLayerElementNumbers();
+    }
+
+    validateLayerNumbers() {
+        if (this.pyramid.height !== this.pyramid.layers.length) {
+            throw `Error:  The number of layers (${this.pyramid.layers.length}) is different that expected (${this.pyramid.height})`;
+        }
+    }
+
+    validateLayerElementNumbers() {
+        const invalidLayers = this.pyramid.layers
+            .filter((layer, index) => layer.length !== index + 1);
+        if (invalidLayers.length) {
+            throw `Error:  ${invalidLayers.length} layer(s) have invalid number of elements`;
+        }
     }
 
     onSlideFinished(result) {
@@ -45,40 +72,39 @@ class PyramidSlide {
         const currentTotal = parentTotal + this.pyramid.layers[currentLayer][currentColumn];
         // check if reached the bottom of the pyramid
         if (currentLayer === (this.pyramid.height - 1)) {
-            this.onSlideFinished(currentTotal);
-            return;
+            return this.onSlideFinished(currentTotal);
         }
         this.slideDown(currentTotal, currentLayer + 1, currentColumn);
         this.slideDown(currentTotal, currentLayer + 1, currentColumn + 1);
     }
 
-    // 'Public' method(s)
+    // 'Public' method
 
     async getFastestSlide() {
         this.fastestSlide = null;
         try {
-            this.inputString = await readInput(this.inputFileName);
+            await this.loadInputString(this.inputFileName);
+            this.processInput();
+            this.validateInput();
+            this.slideDown(0, 0, 0);
         } catch (err) {
-            console.error(`Error when reading file '${this.inputFileName}':\n${err}`);
-            return null;
+            console.error(`${err}`);
         }
-        this.processInput();
-        this.slideDown(0, 0, 0);
-        console.log(this.fastestSlide);
+        console.log('Result: ', this.fastestSlide);
         return this.fastestSlide;
     }
 }
 
 const getFileNameFromArgs = () => {
     var myArgs = process.argv.slice(2);
-    return myArgs.length
-        ? myArgs[0]
-        : defaultInputFileName;
+    return myArgs.length ?
+        myArgs[0] :
+        defaultInputFileName;
 }
 
 const main = () => {
     const inputFileName = getFileNameFromArgs();
-    console.log('Input file name: ', inputFileName);
+    console.log(`Input file name used: '${inputFileName}'`);
     const pyramidSlide = new PyramidSlide(inputFileName);
     pyramidSlide.getFastestSlide();
 }
