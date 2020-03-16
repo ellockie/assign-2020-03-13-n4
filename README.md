@@ -18,3 +18,9 @@ Will use a default `index.txt` file as input.
 
 ### `node fastestPath.js input2.txt`
 Will use a `input2.txt` file as input.
+
+## TODOs, nice-to-have's, maybe's
+- convert to TypeScript
+- convert to Python
+- make it possible to use with pipes
+- convert the input to a proper directed graph
