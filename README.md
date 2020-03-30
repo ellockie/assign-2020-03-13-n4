@@ -13,11 +13,12 @@
 
 ## Usage examples
 
-### `node fastestPath.js`
-Will use a default `index.txt` file as input.
+- `node fastestPath.js` - will use the default `index.txt` file as input.
+- `node fastestPath.js input2.txt` - will use a `input2.txt` file as input.
 
-### `node fastestPath.js input2.txt`
-Will use a `input2.txt` file as input.
+## Testing
+- `npm test` - runs test suite
+- `npm test:watch` - runs test suite in watch mode
 
 ## TODOs, nice-to-have's, maybe's
 - convert to TypeScript
