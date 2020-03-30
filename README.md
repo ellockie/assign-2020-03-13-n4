@@ -18,7 +18,7 @@
 
 ## Testing
 - `npm test` - runs test suite
-- `npm test:watch` - runs test suite in watch mode
+- `npm run test:watch` - runs test suite in watch mode
 
 ## TODOs, nice-to-have's, maybe's
 - convert to TypeScript
